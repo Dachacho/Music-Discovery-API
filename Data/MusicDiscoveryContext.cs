@@ -9,6 +9,6 @@ namespace MusicDiscoveryAPI.Data
             : base(options)
         {
         }
-        DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
