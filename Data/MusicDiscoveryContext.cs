@@ -10,5 +10,6 @@ namespace MusicDiscoveryAPI.Data
         {
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Song> Songs { get; set; }
     }
 }
