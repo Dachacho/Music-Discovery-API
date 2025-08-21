@@ -62,13 +62,12 @@ namespace MusicDiscoveryAPI.Services
 
             if (result == PasswordVerificationResult.Success)
             {
-                return "true";
+                return GenerateJwtToken(user);
             }
             else
             {
                 throw new ArgumentException("Non Valid Credentials");
-            }
-            ;
+            };
         }
 
         public async Task<UserDTO> CreateUserAsync(UserCreateDTO dto)
