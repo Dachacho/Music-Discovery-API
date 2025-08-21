@@ -2,7 +2,7 @@ namespace MusicDiscoveryAPI.DTOs
 {
     public class UserLoginDTO
     {
-        public string Username;
-        public string Password;
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

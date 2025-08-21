@@ -66,7 +66,7 @@ namespace MusicDiscoveryAPI.Services
             }
             else
             {
-                throw new ArgumentException("Non Valid Credentials");
+                throw new ArgumentException("Invalid Credentials");
             };
         }
 
@@ -86,7 +86,7 @@ namespace MusicDiscoveryAPI.Services
             };
 
             var hasher = new PasswordHasher<User>();
-            var hashedPass = hasher.HashPassword(user, dto.Password);
+            user.PasswordHash = hasher.HashPassword(user, dto.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
