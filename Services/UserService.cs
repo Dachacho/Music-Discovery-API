@@ -2,7 +2,6 @@ using MusicDiscoveryAPI.Data;
 using MusicDiscoveryAPI.Models;
 using MusicDiscoveryAPI.DTOs;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 
 namespace MusicDiscoveryAPI.Services
@@ -16,7 +15,12 @@ namespace MusicDiscoveryAPI.Services
             _context = context;
         }
 
-        public async Task<UserDTO> CreateUser(UserCreateDTO dto)
+        public async Task<string?> LoginUserAsync(UserLoginDTO dto)
+        {
+            return null;
+        }
+
+        public async Task<UserDTO> CreateUserAsync(UserCreateDTO dto)
         {
             bool exists = await _context.Users.AnyAsync(u => u.Email == dto.Email || u.Email == dto.Email);
             if (exists)
@@ -42,10 +46,10 @@ namespace MusicDiscoveryAPI.Services
                 Id = user.Id,
                 Username = user.Username,
                 Email = user.Email
-            };        
+            };
         }
 
-        public async Task<IEnumerable<UserDTO>> GetAllUsers()
+        public async Task<IEnumerable<UserDTO>> GetAllUsersAsync()
         {
             var users = await _context.Users.ToListAsync();
             return users.Select(u => new UserDTO
@@ -56,7 +60,7 @@ namespace MusicDiscoveryAPI.Services
             });
         }
 
-        public async Task<UserDTO?> GetUserById(int id)
+        public async Task<UserDTO?> GetUserByIdAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return null;
