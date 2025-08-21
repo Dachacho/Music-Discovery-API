@@ -11,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<MusicDiscoveryContext>(options =>
     options.UseSqlite("Data Source=musicdiscovery.db"));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

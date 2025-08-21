@@ -1,3 +1,4 @@
+using AutoMapper;
 using MusicDiscoveryAPI.Data;
 using MusicDiscoveryAPI.DTOs;
 
@@ -6,9 +7,11 @@ namespace MusicDiscoveryAPI.Services
     public class SongService : ISongService
     {
         private readonly MusicDiscoveryContext _context;
-        public SongService(MusicDiscoveryContext context)
+        private readonly IMapper _mapper;
+        public SongService(MusicDiscoveryContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public Task<SongDTO> CreateSongAsync(SongCreateDTO dto)
