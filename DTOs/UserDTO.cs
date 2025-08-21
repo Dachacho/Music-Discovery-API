@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace MusicDiscoveryAPI.DTOs
 {
     public class UserDTO
     {
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
+        [Required]
+        public required string Username { get; set; }
+        [Required]
+        public required string Email { get; set; }
     }
 }

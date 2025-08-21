@@ -1,8 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace MusicDiscoveryAPI.DTOs
 {
     public class UserLoginDTO
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        [Required]
+        public required string Username { get; set; }
+        [Required]
+        public required string Password { get; set; }
     }
 }
