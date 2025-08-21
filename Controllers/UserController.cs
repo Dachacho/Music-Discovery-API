@@ -55,7 +55,7 @@ namespace MusicDiscoveryAPI.Controllers
                 var token = await _userService.LoginUserAsync(dto);
                 if (token == null) return NotFound();
 
-                return token;
+                return Ok(token);
             }
             catch (ArgumentException ex)
             {
