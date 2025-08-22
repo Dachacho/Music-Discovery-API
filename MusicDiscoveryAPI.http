@@ -4,3 +4,135 @@ GET {{MusicDiscoveryAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+### Create a new playlist
+POST http://localhost:5092/api/playlist
+Content-Type: application/json
+
+{
+  "name": "My Test Playlist",
+  "userId": 1
+}
+
+###
+
+### Create a new song
+POST http://localhost:5092/api/song
+Content-Type: application/json
+
+{
+  "title": "Test Song",
+  "artist": "Test Artist"
+}
+
+###
+
+### Get all playlists
+GET http://localhost:5092/api/playlist
+
+###
+
+### Get all songs
+GET http://localhost:5092/api/song
+
+###
+
+### Add song to playlist (replace playlistId and songId with actual values)
+POST http://localhost:5092/api/playlist/1/songs
+Content-Type: application/json
+
+{
+  "songId": 2
+}
+
+###
+
+### Try adding the same song again (should not duplicate)
+POST http://localhost:5092/api/playlist/1/songs
+Content-Type: application/json
+
+{
+  "songId": 2
+}
+
+###
+
+### Remove song from playlist (valid)
+DELETE http://localhost:5092/api/playlist/1/songs
+Content-Type: application/json
+
+{
+  "songId": 2
+}
+
+###
+
+### Remove song from playlist (song not in playlist)
+DELETE http://localhost:5092/api/playlist/1/songs
+Content-Type: application/json
+
+{
+  "songId": 2
+}
+
+###
+
+### Add song to non-existent playlist (should fail)
+POST http://localhost:5092/api/playlist/9999/songs
+Content-Type: application/json
+
+{
+  "songId": 2
+}
+
+###
+
+### Remove song from non-existent playlist (should fail)
+DELETE http://localhost:5092/api/playlist/9999/songs
+Content-Type: application/json
+
+{
+  "songId": 2
+}
+
+###
+
+### Add non-existent song to playlist (should fail)
+POST http://localhost:5092/api/playlist/1/songs
+Content-Type: application/json
+
+{
+  "songId": 9999
+}
+
+###
+
+### Remove non-existent song from playlist (should fail)
+DELETE http://localhost:5092/api/playlist/1/songs
+Content-Type: application/json
+
+{
+  "songId": 9999
+}
+
+###
+
+### Get playlist by ID (check songs list)
+GET http://localhost:5092/api/playlist/1
+
+###
+
+### Get playlists by user
+GET http://localhost:5092/api/playlist/user/1
+
+###
+
+### Delete a playlist (replace 1 with actual playlistId)
+DELETE http://localhost:5092/api/playlist/1
+
+###
+
+### Delete a song (replace 1 with actual songId)
+DELETE http://localhost:5092/api/song/2
+
+###

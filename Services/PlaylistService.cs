@@ -65,7 +65,7 @@ namespace MusicDiscoveryAPI.Services
         {
             var playlist = await _context.Playlists.Include(p => p.Songs)
                 .FirstOrDefaultAsync(p => p.Id == dto.PlaylistId);
-            var song = await _context.Songs.FindAsync(dto.Songid);
+            var song = await _context.Songs.FindAsync(dto.SongId);
 
             if (playlist == null || song == null)
             {
@@ -85,7 +85,7 @@ namespace MusicDiscoveryAPI.Services
         {
             var playlist = await _context.Playlists.Include(p => p.Songs)
                 .FirstOrDefaultAsync(p => p.Id == dto.PlaylistId);
-            var song = await _context.Songs.FindAsync(dto.Songid);
+            var song = await _context.Songs.FindAsync(dto.SongId);
 
             if (playlist == null || song == null)
             {
