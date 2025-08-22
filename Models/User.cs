@@ -11,5 +11,6 @@ namespace MusicDiscoveryAPI.Models
         public required string PasswordHash { get; set; }
         [Required]
         public required string Email { get; set; }
+        public ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
     }
 }

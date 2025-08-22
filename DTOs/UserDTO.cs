@@ -9,5 +9,6 @@ namespace MusicDiscoveryAPI.DTOs
         public required string Username { get; set; }
         [Required]
         public required string Email { get; set; }
+        public List<int> PlaylistIds { get; set; } = new();
     }
 }
