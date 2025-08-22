@@ -18,6 +18,14 @@ namespace MusicDiscoveryAPI.Services
 
         public async Task<SongDTO> CreateSongAsync(SongCreateDTO dto)
         {
+            var exists = await _context.Songs.AnyAsync(s =>
+            s.Title == dto.Title &&
+            s.Artist == dto.Artist &&
+            s.Album == dto.Album);
+
+             if (exists)
+                throw new InvalidOperationException("A song with the same title, artist, and album already exists.");
+
             var song = _mapper.Map<Song>(dto);
 
             _context.Songs.Add(song);

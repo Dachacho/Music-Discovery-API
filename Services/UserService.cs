@@ -72,7 +72,7 @@ namespace MusicDiscoveryAPI.Services
 
         public async Task<UserDTO> CreateUserAsync(UserCreateDTO dto)
         {
-            bool exists = await _context.Users.AnyAsync(u => u.Email == dto.Email || u.Email == dto.Email);
+            bool exists = await _context.Users.AnyAsync(u => u.Email == dto.Email || u.Username == dto.Username);
             if (exists)
             {
                 throw new ArgumentException("A user with same Email and or Username Exists");
