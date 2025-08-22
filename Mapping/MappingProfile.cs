@@ -10,6 +10,10 @@ namespace MusicDiscoveryAPI.Mapping
         {
             CreateMap<Song, SongDTO>().ReverseMap();
             CreateMap<SongCreateDTO, Song>();
+
+            CreateMap<PlaylistCreateDTO, Playlist>();
+            CreateMap<Playlist, PlaylistDTO>()
+                .ForMember(dest => dest.SongIds, opt => opt.MapFrom(src => src.Songs.Select(s => s.Id)));
         }
     }
 }
