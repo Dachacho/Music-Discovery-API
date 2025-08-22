@@ -13,5 +13,6 @@ namespace MusicDiscoveryAPI.Models
         public string? Duration { get; set; }
         public required string? Genre { get; set; }
         public required string? ReleaseYear { get; set; }
+        public ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
     }
 }
