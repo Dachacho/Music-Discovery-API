@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicDiscoveryAPI.Services;
 using MusicDiscoveryAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MusicDiscoveryAPI.Controllers
 {
@@ -31,15 +32,20 @@ namespace MusicDiscoveryAPI.Controllers
             return Ok(playlist);
         }
 
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<PlaylistDTO>>> GetPlaylistByUserId(int userId)
+        [HttpGet("my")]
+        public async Task<ActionResult<IEnumerable<PlaylistDTO>>> GetPlaylistByUserId()
         {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) return Unauthorized();
+
+            var userId = int.Parse(userIdClaim.Value);
             var playlists = await _playlistService.GetPlaylistByUserAsync(userId);
             if (playlists == null || !playlists.Any()) return NotFound();
 
             return Ok(playlists);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<PlaylistDTO>> CreatePlaylist(PlaylistCreateDTO dto)
         {
@@ -54,14 +60,24 @@ namespace MusicDiscoveryAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("{playlistId}/songs")]
         public async Task<ActionResult<PlaylistDTO>> AddSongToPlaylist(int playlistId, PlaylistAddDTO dto)
         {
             try
             {
+                var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (userIdClaim == null) return Unauthorized();
+
+                var playlist = await _playlistService.GetPlaylistByIdAsync(playlistId);
+                if (playlist == null || playlist.UserId != int.Parse(userIdClaim.Value))
+                {
+                    return NotFound();
+                }
+
                 dto.PlaylistId = playlistId;
-                var playlist = await _playlistService.PlaylistAddSongAsync(dto);
-                return Ok(playlist);
+                var updatedPlaylist = await _playlistService.PlaylistAddSongAsync(dto);
+                return Ok(updatedPlaylist);
             }
             catch (InvalidOperationException ex)
             {
@@ -69,11 +85,21 @@ namespace MusicDiscoveryAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{playlistId}/songs")]
         public async Task<IActionResult> RemoveSongToPlaylist(int playlistId, PlaylistAddDTO dto)
         {
             try
             {
+                var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (userIdClaim == null) return Unauthorized();
+
+                var playlist = await _playlistService.GetPlaylistByIdAsync(playlistId);
+                if (playlist == null || playlist.UserId != int.Parse(userIdClaim.Value))
+                {
+                    return NotFound();
+                }
+
                 dto.PlaylistId = playlistId;
                 var removed = await _playlistService.RemoveSongFromPlaylistAsync(dto);
                 if (!removed)
@@ -89,9 +115,20 @@ namespace MusicDiscoveryAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlaylist(int id)
         {
+            var playlist = await _playlistService.GetPlaylistByIdAsync(id);
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) return Unauthorized();
+
+            if (playlist == null || playlist.UserId != int.Parse(userIdClaim.Value))
+            {
+                return NotFound();
+            }
+
             var deleted = await _playlistService.DeletePlaylistAsync(id);
             if (!deleted)
             {

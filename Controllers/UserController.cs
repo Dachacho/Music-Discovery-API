@@ -24,6 +24,7 @@ namespace MusicDiscoveryAPI.Controllers
             return Ok(users);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
@@ -33,6 +34,7 @@ namespace MusicDiscoveryAPI.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> RegisterUser(UserCreateDTO dto)
         {
@@ -47,6 +49,7 @@ namespace MusicDiscoveryAPI.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<string>> LoginUser(UserLoginDTO dto)
         {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MusicDiscoveryAPI.Services;
 using MusicDiscoveryAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MusicDiscoveryAPI.Controllers
 {
@@ -31,6 +32,7 @@ namespace MusicDiscoveryAPI.Controllers
             return Ok(song);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<SongDTO>> CreateSong(SongCreateDTO dto)
         {
@@ -45,6 +47,7 @@ namespace MusicDiscoveryAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<SongDTO>> UpdateSong(SongCreateDTO dto, int id)
         {
@@ -60,6 +63,7 @@ namespace MusicDiscoveryAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSong(int id)
         {
