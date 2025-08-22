@@ -1,6 +1,8 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MusicDiscoveryAPI.Data;
 using MusicDiscoveryAPI.DTOs;
+using MusicDiscoveryAPI.Models;
 
 namespace MusicDiscoveryAPI.Services
 {
@@ -14,29 +16,48 @@ namespace MusicDiscoveryAPI.Services
             _mapper = mapper;
         }
 
-        public Task<SongDTO> CreateSongAsync(SongCreateDTO dto)
+        public async Task<SongDTO> CreateSongAsync(SongCreateDTO dto)
         {
-            throw new NotImplementedException();
+            var song = _mapper.Map<Song>(dto);
+
+            _context.Songs.Add(song);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<SongDTO>(song);
         }
 
-        public Task<bool> DeleteSongAsync(int id)
+        public async Task<bool> DeleteSongAsync(int id)
         {
-            throw new NotImplementedException();
+            var song = await _context.Songs.FindAsync(id);
+            if (song == null) return false;
+
+            _context.Songs.Remove(song);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<IEnumerable<SongDTO>> GetAllSongsAsync()
+        public async Task<IEnumerable<SongDTO>> GetAllSongsAsync()
         {
-            throw new NotImplementedException();
+            var songs = await _context.Songs.ToListAsync();
+            return songs.Select(_mapper.Map<SongDTO>);
         }
 
-        public Task<SongDTO?> GetSongByIdAsync(int id)
+        public async Task<SongDTO?> GetSongByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var song = await _context.Songs.FindAsync(id);
+            return _mapper.Map<SongDTO>(song);
         }
 
-        public Task<SongDTO> UpdateSongAsync(SongCreateDTO dto, int id)
+        public async Task<SongDTO> UpdateSongAsync(SongCreateDTO dto, int id)
         {
-            throw new NotImplementedException();
+            var song = await _context.Songs.FindAsync(id);
+            if (song == null) throw new ArgumentException("Song not found");
+
+            _mapper.Map(dto, song);
+
+            await _context.SaveChangesAsync();
+            return _mapper.Map<SongDTO>(song); 
+
         }
     }
 }

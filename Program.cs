@@ -14,6 +14,7 @@ builder.Services.AddDbContext<MusicDiscoveryContext>(options =>
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
