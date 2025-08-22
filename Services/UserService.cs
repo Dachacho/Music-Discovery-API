@@ -95,7 +95,8 @@ namespace MusicDiscoveryAPI.Services
             {
                 Id = user.Id,
                 Username = user.Username,
-                Email = user.Email
+                Email = user.Email,
+                PlaylistIds = user.Playlists.Select(p => p.Id).ToList()
             };
         }
 
@@ -106,7 +107,8 @@ namespace MusicDiscoveryAPI.Services
             {
                 Id = u.Id,
                 Username = u.Username,
-                Email = u.Email
+                Email = u.Email,
+                PlaylistIds = u.Playlists.Select(p => p.Id).ToList()
             });
         }
 
@@ -119,7 +121,8 @@ namespace MusicDiscoveryAPI.Services
             {
                 Id = user.Id,
                 Username = user.Username,
-                Email = user.Email
+                Email = user.Email,
+                PlaylistIds = user.Playlists.Select(p => p.Id).ToList()
             };
         }
     }
