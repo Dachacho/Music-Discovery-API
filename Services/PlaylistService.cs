@@ -16,39 +16,93 @@ namespace MusicDiscoveryAPI.Services
             _mapper = mapper;
         }
 
-        public Task<PlaylistDTO> CreatePlaylistAsync(PlaylistCreateDTO dto)
+        public async Task<PlaylistDTO> CreatePlaylistAsync(PlaylistCreateDTO dto)
         {
-            throw new NotImplementedException();
+            bool exists = await _context.Playlists.AnyAsync(p =>
+                p.Name == dto.Name && p.UserId == dto.UserId);
+
+            if (exists)
+                throw new InvalidOperationException("A playlist with this name already exists for this user.");
+
+            var playlist = _mapper.Map<Playlist>(dto);
+
+            _context.Playlists.Add(playlist);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<PlaylistDTO>(playlist);
         }
 
-        public Task<bool> DeletePlaylistAsync(int id)
+        public async Task<bool> DeletePlaylistAsync(int id)
         {
-            throw new NotImplementedException();
+            var playlist = await _context.Playlists.FindAsync(id);
+            if (playlist == null) return false;
+
+            _context.Playlists.Remove(playlist);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<IEnumerable<PlaylistDTO>> GetAllPlaylistsAsync()
+        public async Task<IEnumerable<PlaylistDTO>> GetAllPlaylistsAsync()
         {
-            throw new NotImplementedException();
+            var playlists = await _context.Playlists.ToListAsync();
+            return playlists.Select(_mapper.Map<PlaylistDTO>);
         }
 
-        public Task<IEnumerable<PlaylistDTO>> GetPlaylistByIdAsync(int id)
+        public async Task<PlaylistDTO?> GetPlaylistByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var playlist = await _context.Playlists.FindAsync(id);
+            return _mapper.Map<PlaylistDTO>(playlist);
         }
 
-        public Task<PlaylistDTO?> GetPlaylistByUserAsync(int userId)
+        public async Task<IEnumerable<PlaylistDTO>> GetPlaylistByUserAsync(int userId)
         {
-            throw new NotImplementedException();
+            var playlists = await _context.Playlists
+            .Where(p => p.UserId == userId).ToListAsync();
+            return playlists.Select(_mapper.Map<PlaylistDTO>);
         }
 
-        public Task<PlaylistDTO> PlaylistAddSongAsync(PlaylistAddDTO dto)
+        public async Task<PlaylistDTO> PlaylistAddSongAsync(PlaylistAddDTO dto)
         {
-            throw new NotImplementedException();
+            var playlist = await _context.Playlists.Include(p => p.Songs)
+                .FirstOrDefaultAsync(p => p.Id == dto.PlaylistId);
+            var song = await _context.Songs.FindAsync(dto.Songid);
+
+            if (playlist == null || song == null)
+            {
+                throw new InvalidOperationException("Playlist or song not found");
+            }
+
+            if (!playlist.Songs.Contains(song))
+            {
+                playlist.Songs.Add(song);
+            }
+
+            await _context.SaveChangesAsync();
+            return _mapper.Map<PlaylistDTO>(playlist);
         }
 
-        public Task<bool> RemoveSongFromPlaylistAsync(PlaylistAddDTO dto)
+        public async Task<bool> RemoveSongFromPlaylistAsync(PlaylistAddDTO dto)
         {
-            throw new NotImplementedException();
+            var playlist = await _context.Playlists.Include(p => p.Songs)
+                .FirstOrDefaultAsync(p => p.Id == dto.PlaylistId);
+            var song = await _context.Songs.FindAsync(dto.Songid);
+
+            if (playlist == null || song == null)
+            {
+                throw new InvalidOperationException("Playlist or song not found");
+            }
+
+            if (!playlist.Songs.Contains(song))
+            {
+                return false;
+            }
+            else
+            {
+                playlist.Songs.Remove(song);
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }
