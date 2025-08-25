@@ -9,5 +9,6 @@ namespace MusicDiscoveryAPI.DTOs
         public required string Name { get; set; }
         public int UserId { get; set; }
         public List<int> SongIds { get; set; } = new();
+        public bool IsPublic { get; set; }
     }
 }
