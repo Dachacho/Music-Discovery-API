@@ -136,3 +136,6 @@ DELETE http://localhost:5092/api/playlist/1
 DELETE http://localhost:5092/api/song/2
 
 ###
+
+GET http://localhost:5092/api/song/search?query=Pop
+Accept: application/json

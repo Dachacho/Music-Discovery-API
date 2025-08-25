@@ -10,7 +10,7 @@ namespace MusicDiscoveryAPI.DTOs
         [Required]
         public required string Artist { get; set; }
         public string? Album { get; set; }
-        public int? Duration { get; set; }
+        public string? Duration { get; set; }
         public string? Genre { get; set; }
         public int? ReleaseYear { get; set; }
     }

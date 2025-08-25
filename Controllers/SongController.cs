@@ -71,5 +71,17 @@ namespace MusicDiscoveryAPI.Controllers
             if (song == false) return NotFound();
             return NoContent();
         }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<SongDTO>>> SearchSong([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return BadRequest("Provide Query Parameters");
+            }
+
+            var results = await _songService.SearchSongAsync(query);
+            return Ok(results);
+        }
     }
 }
