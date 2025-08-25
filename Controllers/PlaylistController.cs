@@ -23,6 +23,13 @@ namespace MusicDiscoveryAPI.Controllers
             return Ok(playlists);
         }
 
+        [HttpGet("public")]
+        public async Task<ActionResult<IEnumerable<PlaylistDTO>>> GetAllPublicPlaylists()
+        {
+            var playlists = await _playlistService.GetAllPublicPlaylistsAsync();
+            return Ok(playlists);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<PlaylistDTO>> GetPlaylistById(int id)
         {

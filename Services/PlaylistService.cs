@@ -48,6 +48,12 @@ namespace MusicDiscoveryAPI.Services
             return playlists.Select(_mapper.Map<PlaylistDTO>);
         }
 
+        public async Task<IEnumerable<PlaylistDTO>> GetAllPublicPlaylistsAsync()
+        {
+            var playlists = await _context.Playlists.Where(p => p.IsPublic == true).ToListAsync();
+            return playlists.Select(_mapper.Map<PlaylistDTO>);
+        }
+
         public async Task<PlaylistDTO?> GetPlaylistByIdAsync(int id)
         {
             var playlist = await _context.Playlists.FindAsync(id);
