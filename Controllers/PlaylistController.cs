@@ -138,7 +138,7 @@ namespace MusicDiscoveryAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("{playlistId}/public")]
+        [HttpPatch("{playlistId}/public")]
         public async Task<IActionResult> SetPlaylistPublicStatus(int playlistId, bool isPublic)
         {
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);

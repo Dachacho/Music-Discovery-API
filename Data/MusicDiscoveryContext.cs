@@ -28,7 +28,18 @@ namespace MusicDiscoveryAPI.Data
                 new Song { Id = 8, Title = "Blinding Lights", Artist = "The Weeknd", Album = "After Hours", Duration = "3:20", Genre = "Synthpop", ReleaseYear = "2019" },
                 new Song { Id = 9, Title = "Uptown Funk", Artist = "Mark Ronson ft. Bruno Mars", Album = "Uptown Special", Duration = "4:30", Genre = "Funk", ReleaseYear = "2014" },
                 new Song { Id = 10, Title = "Viva La Vida", Artist = "Coldplay", Album = "Viva la Vida or Death and All His Friends", Duration = "4:02", Genre = "Alternative", ReleaseYear = "2008" }
-            ); 
+            );
+
+            modelBuilder.Entity<User>().HasData(
+                new User { Id = 1, Username = "alice", PasswordHash = "hash1", Email = "alice@example.com" },
+                new User { Id = 2, Username = "bob", PasswordHash = "hash2", Email = "bob@example.com" }
+            );
+            
+            modelBuilder.Entity<Playlist>().HasData(
+                new Playlist { Id = 1, Name = "Alice's Public", UserId = 1, IsPublic = true },
+                new Playlist { Id = 2, Name = "Alice's Private", UserId = 1, IsPublic = false },
+                new Playlist { Id = 3, Name = "Bob's Public", UserId = 2, IsPublic = true }
+            );
         }
     }
 }
