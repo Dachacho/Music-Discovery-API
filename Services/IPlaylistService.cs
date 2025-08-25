@@ -10,5 +10,6 @@ namespace MusicDiscoveryAPI.Services {
         Task<PlaylistDTO> PlaylistAddSongAsync(PlaylistAddDTO dto);
         Task<bool> RemoveSongFromPlaylistAsync(PlaylistAddDTO dto);
         Task<bool> DeletePlaylistAsync(int id);
+        Task<bool> SetPlaylistPublicStatusAsync(int playlistId, int userId, bool isPublic);
     }
 }

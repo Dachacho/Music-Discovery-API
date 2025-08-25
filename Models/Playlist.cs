@@ -9,6 +9,6 @@ namespace MusicDiscoveryAPI.Models
         public required string Name { get; set; }
         public int UserId { get; set; }
         public ICollection<Song> Songs { get; set; } = new List<Song>();
-        bool IsPublic { get; set; }
+        public bool IsPublic { get; set; }
     }
 }

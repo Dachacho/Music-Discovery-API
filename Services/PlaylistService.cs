@@ -104,5 +104,24 @@ namespace MusicDiscoveryAPI.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> SetPlaylistPublicStatusAsync(int playlistId, int userId, bool isPublic)
+        {
+            var playlist = await _context.Playlists.FindAsync(playlistId);
+
+            if (playlist == null)
+            {
+                throw new ArgumentException("Plese provide correct PlaylistId");
+            }
+
+            if (playlist.UserId != userId)
+            {
+                throw new UnauthorizedAccessException("You are not the owner of the playlist");
+            }
+
+            playlist.IsPublic = isPublic;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
