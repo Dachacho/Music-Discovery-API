@@ -66,5 +66,24 @@ namespace MusicDiscoveryAPI.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<SongDTO>(song); 
         }
+
+        public async Task<IEnumerable<SongDTO>> SearchSongAsync(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return Enumerable.Empty<SongDTO>();
+            }
+
+            query = query.ToLower();
+        
+            var songs = await _context.Songs
+            .Where(s =>
+                (s.Title != null && s.Title.ToLower().Contains(query)) ||
+                (s.Genre != null && s.Genre.ToLower().Contains(query)) ||
+               (s.Artist != null && s.Artist.ToLower().Contains(query)))
+            .ToListAsync();
+        
+            return songs.Select(_mapper.Map<SongDTO>);
+        }
     }
 }

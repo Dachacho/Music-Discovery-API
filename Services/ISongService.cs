@@ -8,5 +8,6 @@ namespace MusicDiscoveryAPI.Services {
         Task<SongDTO> CreateSongAsync(SongCreateDTO dto);
         Task<SongDTO> UpdateSongAsync(SongCreateDTO dto, int id);
         Task<bool> DeleteSongAsync(int id);
+        Task<IEnumerable<SongDTO>> SearchSongAsync(string query);
     }
 }
