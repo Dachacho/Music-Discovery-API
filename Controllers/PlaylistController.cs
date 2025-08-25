@@ -136,5 +136,30 @@ namespace MusicDiscoveryAPI.Controllers
             }
             return NoContent();
         }
+
+        [Authorize]
+        [HttpGet("{playlistId}/public")]
+        public async Task<IActionResult> SetPlaylistPublicStatus(int playlistId, bool isPublic)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null) return Unauthorized();
+
+            var userId = int.Parse(userIdClaim.Value);
+
+            try
+            {
+                var result = await _playlistService.SetPlaylistPublicStatusAsync(playlistId, userId, isPublic);
+                if (!result) return NotFound();
+                return NoContent();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
